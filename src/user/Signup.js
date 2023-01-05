@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from 'react-router-dom'
 import Layout from "../core/Layout";
 import { API } from "../config"
 
@@ -12,7 +13,7 @@ const Signup = () => {
         success: false
     });
 
-    const { name, email, password } = values
+    const { name, email, password, success, error } = values
 
     //Higher order functions - where functions return another function
     const handleChange = (name) => event => {
@@ -24,7 +25,7 @@ const Signup = () => {
         //console.log(name, email, password);
         //It is available with the brower itself
 
-        fetch(`${API}/signup`, {
+        return fetch(`${API}/signup`, {
             method: "POST",
             headers: {
                 Accept: 'application/json',
@@ -43,36 +44,57 @@ const Signup = () => {
     //prevent default behaviour, since on submit the page will reload and we do not want that behaviour.
     const onSubmit = (event) => {
         event.preventDefault();
+        setValues({ ...values, error: false })
         signup({ name, email, password })
+            .then(data => {
+                if (data.error) {
+                    setValues({ ...values, error: data.error, success: false })
+                } else {
+                    setValues({ ...values, name: '', email: '', password: '', error: '', success: true })
+                }
+            })
     }
 
     const SignupForm = () => (
         <form>
             <div className="form-group">
                 <label className="text-muted">Name</label>
-                <input type="text" onChange={handleChange('name')} className="form-control"></input>
+                <input type="text" onChange={handleChange('name')} value={name} className="form-control"></input>
             </div>
 
             <div className="form-group">
                 <label className="text-muted">Email</label>
-                <input type="email" onChange={handleChange('email')} className="form-control"></input>
+                <input type="email" onChange={handleChange('email')} value={email} className="form-control"></input>
             </div>
 
             <div className="form-group">
                 <label className="text-muted">Password</label>
-                <input type="password" onChange={handleChange('password')} className="form-control"></input>
+                <input type="password" onChange={handleChange('password')} value={password} className="form-control"></input>
             </div>
 
             <button onClick={onSubmit} className="btn btn-primary">Submit</button>
         </form>
     )
 
+    const showError = () => (
+        <div className="alert alert-danger" style={{ display: error ? '' : 'none' }}>
+            {error}
+        </div>
+    )
+
+    const showSuccess = () => (
+        <div className="alert alert-info" style={{ display: success ? '' : 'none' }}>
+            New Account is created. Please <Link to="/signin">Signin</Link >
+        </div>
+    )
+
     return (
         <div>
             <Layout title="Sigup Page" description="Signup to Node React E-Commerce Website" className="container">
+                {showError()}
+                {showSuccess()}
                 {SignupForm()}
                 {JSON.stringify(values)}
-                {`${API}/signup`}
             </Layout>
         </div>
     )
