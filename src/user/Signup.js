@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from 'react-router-dom'
 import Layout from "../core/Layout";
-import { API } from "../config"
+import { signup } from "../auth/index"
 
 const Signup = () => {
 
@@ -20,26 +20,7 @@ const Signup = () => {
         setValues({ ...values, error: false, [name]: event.target.value })
     }
 
-    //Send data to backend
-    const signup = (user) => {
-        //console.log(name, email, password);
-        //It is available with the brower itself
 
-        return fetch(`${API}/signup`, {
-            method: "POST",
-            headers: {
-                Accept: 'application/json',
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(user)
-        })
-            .then(response => {
-                return response.json()
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    }
 
     //prevent default behaviour, since on submit the page will reload and we do not want that behaviour.
     const onSubmit = (event) => {
@@ -94,7 +75,7 @@ const Signup = () => {
                 {showError()}
                 {showSuccess()}
                 {SignupForm()}
-                {JSON.stringify(values)}
+                {/* {JSON.stringify(values)} */}
             </Layout>
         </div>
     )
