@@ -64,3 +64,15 @@ export const signout = (callBack) => {
             .catch(err => console.log(err));
     }
 }
+
+export const isAuthenticated = () => {
+    if (window.typeOf === 'undefined') {
+        return false
+    }
+
+    if (localStorage.getItem('jwt')) {
+        return JSON.parse(localStorage.getItem('jwt'))
+    } else {
+        return false
+    }
+}
