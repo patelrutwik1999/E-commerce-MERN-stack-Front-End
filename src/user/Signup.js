@@ -23,7 +23,7 @@ const Signup = () => {
 
 
     //prevent default behaviour, since on submit the page will reload and we do not want that behaviour.
-    const onSubmit = (event) => {
+    const clickSubmit = (event) => {
         event.preventDefault();
         setValues({ ...values, error: false })
         signup({ name, email, password })
@@ -53,7 +53,7 @@ const Signup = () => {
                 <input type="password" onChange={handleChange('password')} value={password} className="form-control"></input>
             </div>
 
-            <button onClick={onSubmit} className="btn btn-primary">Submit</button>
+            <button onClick={clickSubmit} className="btn btn-primary">Submit</button>
         </form>
     )
 

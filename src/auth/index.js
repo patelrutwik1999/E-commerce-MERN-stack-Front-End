@@ -20,3 +20,31 @@ export const signup = (user) => {
             console.log(err)
         })
 }
+
+export const signin = (user) => {
+    //console.log(email, password);
+    //It is available with the brower itself
+
+    return fetch(`${API}/signin`, {
+        method: "POST",
+        headers: {
+            Accept: 'application/json',
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(user)
+    })
+        .then(response => {
+            return response.json()
+        })
+        .catch(err => {
+            console.log(err)
+        })
+}
+
+export const authenticate = (data, callBack) => {
+    if (typeof window != undefined) {
+        localStorage.setItem('jwt', JSON.stringify(data));
+        //redirect, clear the stack
+        callBack();
+    }
+}
