@@ -1,6 +1,7 @@
 import React from "react";
 //WithRouter to access props history
 import { Link, withRouter } from 'react-router-dom'
+import { signout } from '../auth'
 
 //History will have the current path
 //Path will have the path being passed
@@ -24,6 +25,12 @@ const Menu = ({ history }) => (<div>
 
         <li className="nav-item">
             <Link className="nav-link" to="/signup" style={isActive(history, '/signup')}>Signup</Link>
+        </li>
+
+        <li className="nav-item">
+            <span className="nav-link" to="/signup" style={{ cursor: 'pointer', color: '#ffffff' }} onClick={() => signout(() => {
+                history.push("/");
+            })}>Signout</span>
         </li>
     </ul>
 </div>
