@@ -14,7 +14,7 @@ const Signin = () => {
     });
 
     const { email, password, loading, error, redirectToReferrer } = values
-    const { user } = isAuthenticated
+    const { user } = isAuthenticated()
 
     //Higher order functions - where functions return another function
     const handleChange = (name) => event => {
@@ -68,11 +68,9 @@ const Signin = () => {
 
     const redirectUser = () => {
         if (redirectToReferrer) {
-            if (user && (user.role === 1)) {
-                console.log("user.role")
-                return (
-
-                    <Redirect to="/admin/dashboard" />);
+            console.log({ user })
+            if (user && user.role === 1) {
+                return (<Redirect to="/admin/dashboard" />);
             } else {
                 console.log("user.role.user")
                 return <Redirect to="/user/dashboard" />;

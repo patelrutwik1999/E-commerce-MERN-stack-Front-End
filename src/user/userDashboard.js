@@ -4,7 +4,7 @@ import { isAuthenticated } from '../auth'
 import { Link } from 'react-router-dom'
 
 function Dashboard() {
-    const { user: { _id, name, email, role } } = isAuthenticated()
+    const { user: { name, email, role } } = isAuthenticated()
 
     const userLinks = () => {
         return (
