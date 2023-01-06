@@ -68,22 +68,30 @@ const Signin = () => {
 
     const redirectUser = () => {
         if (redirectToReferrer) {
-            if (user && user.role === 1) {
-                return <Redirect to="/admin/dashboard"></Redirect>
+            if (user && (user.role === 1)) {
+                console.log("user.role")
+                return (
+
+                    <Redirect to="/admin/dashboard" />);
             } else {
-                return <Redirect to="/user/dashboard"></Redirect>
+                console.log("user.role.user")
+                return <Redirect to="/user/dashboard" />;
             }
+        }
+        if (isAuthenticated()) {
+            return <Redirect to="/" />;
         }
     }
 
     return (
-        <div div >
+        <div>
             <Layout title="Sigin Page" description="Signin to Node React E-Commerce Website" className="container">
                 {showLoading()}
                 {showError()}
                 {SigninForm()}
                 {redirectUser()}
             </Layout>
+
         </div>
     )
 

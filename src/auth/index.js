@@ -42,7 +42,7 @@ export const signin = (user) => {
 }
 
 export const authenticate = (data, callBack) => {
-    if (typeof window !== undefined) {
+    if (typeof window !== 'undefined') {
         localStorage.setItem('jwt', JSON.stringify(data));
         //redirect, clear the stack
         callBack();
@@ -50,7 +50,7 @@ export const authenticate = (data, callBack) => {
 }
 
 export const signout = (callBack) => {
-    if (typeof window !== undefined) {
+    if (typeof window !== 'undefined') {
         localStorage.removeItem('jwt');
         //redirect, clear the stack
         callBack();
