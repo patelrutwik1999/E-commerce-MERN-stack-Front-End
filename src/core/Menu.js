@@ -31,11 +31,14 @@ const Menu = ({ history }) => (<div>
             </Fragment>
         )
         }
-        <li className="nav-item">
-            <span className="nav-link" to="/signup" style={{ cursor: 'pointer', color: '#ffffff' }} onClick={() => signout(() => {
-                history.push("/");
-            })}>Signout</span>
-        </li>
+
+        {isAuthenticated() &&
+            <li className="nav-item">
+                <span className="nav-link" style={{ cursor: 'pointer', color: '#ffffff' }} onClick={() => signout(() => {
+                    history.push("/");
+                })}>Signout</span>
+            </li>
+        }
     </ul>
 </div>
 )
