@@ -33,15 +33,19 @@ const Menu = ({ history }) => (<div>
         }
 
         {isAuthenticated() &&
-            <li className="nav-item">
-                <span className="nav-link" style={{ cursor: 'pointer', color: '#ffffff' }} onClick={() => signout(() => {
-                    history.push("/");
-                })}>Signout</span>
-            </li>
+            <Fragment>
+                <li className="nav-item">
+                    <Link className="nav-link" to="/dashboard" style={isActive(history, '/dashboard')}>Dashboard</Link>
+                </li>
+                <li className="nav-item">
+                    <span className="nav-link" style={{ cursor: 'pointer', color: '#ffffff' }} onClick={() => signout(() => {
+                        history.push("/");
+                    })}>Signout</span>
+                </li>
+            </Fragment>
         }
     </ul>
 </div>
 )
-
 
 export default withRouter(Menu)
