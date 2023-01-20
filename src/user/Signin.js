@@ -4,7 +4,6 @@ import { signin, authenticate, isAuthenticated } from "../auth";
 import { Redirect } from "react-router-dom";
 
 const Signin = () => {
-
     const [values, setValues] = useState({
         email: '',
         password: '',
