@@ -27,7 +27,6 @@ export const createProduct = (userId, token, product) => {
     //console.log(name, email, password);
     //It is available with the brower itself
 
-
     //Will not use content-type because here we are sending photo of the products.
     return fetch(`${API}/product/create/${userId}`, {
         method: "POST",
@@ -35,7 +34,7 @@ export const createProduct = (userId, token, product) => {
             Accept: 'application/json',
             Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify(product)
+        body: product
     })
         .then(response => {
             return response.json()
@@ -43,4 +42,14 @@ export const createProduct = (userId, token, product) => {
         .catch(err => {
             console.log(err)
         })
+}
+
+export const getCategories = () => {
+    return fetch(`${API}/categories`, {
+        method: 'get'
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => console.log(err))
 }
