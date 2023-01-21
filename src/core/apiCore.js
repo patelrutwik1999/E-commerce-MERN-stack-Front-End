@@ -11,3 +11,23 @@ export const getProducts = (sortBy) => {
             console.log(error);
         })
 }
+
+export const getFilteredProducts = (skip, limit, filters = {}) => {
+    const data = {
+        skip, limit, filters
+    }
+    return fetch(`${API}/products/by/search`, {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(error => {
+            console.log(error)
+        })
+}
