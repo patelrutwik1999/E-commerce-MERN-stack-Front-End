@@ -119,9 +119,6 @@ function Shop() {
                 </div>
                 <div className='col-8'>
                     <h2 className='mb-4'>Products</h2>
-                    {/* {JSON.stringify(filteredResults)} */}
-
-
                     <div className='row'>
                         {filteredResults.map((product, index) => (
                             <Card key={index} products={product}></Card>
