@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import Card from './Card';
 import { getCartFromLocalStorage } from './cartHelpers';
+import Checkout from './Checkout';
 import Layout from './Layout';
 
 function Cart() {
@@ -9,7 +10,7 @@ function Cart() {
 
     useEffect(() => {
         setCartItems(getCartFromLocalStorage())
-    }, [])
+    }, [cartItems])
 
     const showItems = (cartItems) => {
         return (
@@ -18,7 +19,13 @@ function Cart() {
                 <hr />
 
                 {cartItems.map((product, index) => (
-                    <Card key={index} products={product} showAddToCartButton={false}></Card>
+                    <Card
+                        key={index}
+                        products={product}
+                        showAddToCartButton={false}
+                        cartUpdate={true}
+                        showRemoveProductButton={true}
+                    ></Card>
                 ))}
             </div>
         )
@@ -45,7 +52,9 @@ function Cart() {
                 </div>
 
                 <div className='col-6'>
-                    <p>Show checkout option/ shipping address / total / update quantity</p>
+                    <h2 className='mb-4'>Your cart summary</h2>
+                    <hr />
+                    <Checkout products={cartItems}></Checkout>
                 </div>
             </div>
         </Layout>

@@ -2,14 +2,17 @@ import React, { useState } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import ShowImage from './ShowImage'
 import moment from 'moment'
-import { addItem } from './cartHelpers'
+import { addItem, cartUpdateItem, removeCartItem } from './cartHelpers'
 
 function Card({
     products,
     showViewProductButton = true,
-    showAddToCartButton = true
+    showAddToCartButton = true,
+    cartUpdate = false,
+    showRemoveProductButton = false
 }) {
     const [redirect, setRedirect] = useState(false)
+    const [count, setCount] = useState(products.count)
 
     const showViewButton = (showViewProductButton) => (
         showViewProductButton && (
@@ -39,7 +42,7 @@ function Card({
 
     const shouldRedirect = (redirect) => {
         if (redirect) {
-            return <Redirect to="/card"></Redirect>
+            return <Redirect to="/cart"></Redirect>
         }
     }
 
@@ -49,6 +52,35 @@ function Card({
             qunatity > 0 ?
                 <span className='badge badge-primary badge-pill'>In Stock</span> :
                 <span className='badge badge-primary badge-pill'>Out of Stock</span>
+        )
+    }
+
+    const showCartUpdateOptions = (cartUpdate) => {
+        return cartUpdate &&
+            <div>
+                <div className='input-group mb-3'>
+                    <div className='intput-group-prepend'>
+                        <span className='input-group-text'>Adjust Quantity</span>
+                    </div>
+                    <input type='number' className='form-control' value={count} onChange={handleChange(products._id)}></input>
+                </div>
+            </div>
+    }
+
+    const handleChange = (productId) => (event) => {
+        setCount(event.target.value < 1 ? 1 : event.target.value);
+        if (event.target.value >= 1) {
+            cartUpdateItem(productId, event.target.value)
+        }
+    }
+
+    const showRemoveButton = (showRemoveProductButton) => {
+        return (
+            showRemoveProductButton && (
+                <button className='btn btn-outline-danger mt-2 mb-2'
+                    onClick={() => removeCartItem(products._id)}>Remove
+                </button>
+            )
         )
     }
 
@@ -71,6 +103,10 @@ function Card({
                 {showViewButton(showViewProductButton)}
 
                 {showAddToCart(showAddToCartButton)}
+
+                {showRemoveButton(showRemoveProductButton)}
+
+                {showCartUpdateOptions(cartUpdate)}
             </div>
         </div>
     )
