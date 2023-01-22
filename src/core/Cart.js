@@ -7,10 +7,11 @@ import Layout from './Layout';
 
 function Cart() {
     const [cartItems, setCartItems] = useState([]);
+    const [run, setRun] = useState(false)
 
     useEffect(() => {
         setCartItems(getCartFromLocalStorage())
-    }, [cartItems])
+    }, [run])
 
     const showItems = (cartItems) => {
         return (
@@ -25,6 +26,8 @@ function Cart() {
                         showAddToCartButton={false}
                         cartUpdate={true}
                         showRemoveProductButton={true}
+                        setRun={setRun}
+                        run={run}
                     ></Card>
                 ))}
             </div>
@@ -54,7 +57,7 @@ function Cart() {
                 <div className='col-6'>
                     <h2 className='mb-4'>Your cart summary</h2>
                     <hr />
-                    <Checkout products={cartItems}></Checkout>
+                    <Checkout products={cartItems} setRun={setRun} run={run}></Checkout>
                 </div>
             </div>
         </Layout>
