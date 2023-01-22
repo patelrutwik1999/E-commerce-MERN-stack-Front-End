@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { isAuthenticated } from '../auth'
-import { getBraintreeClientToken } from './apiCore'
+import { getBraintreeClientToken, processPayment } from './apiCore'
+import { emptyCart } from './cartHelpers'
 // import "braintree-web"; // not using this package
 import DropIn from 'braintree-web-drop-in-react';
 
 function Checkout({ products, setRun = f => f, run = undefined }) {
     const [data, setData] = useState({
+        loading: false,
         success: false,
         clientToken: null,
         error: false,
@@ -22,7 +24,7 @@ function Checkout({ products, setRun = f => f, run = undefined }) {
             if (response.error) {
                 setData({ ...data, error: response.error })
             } else {
-                setData({ ...data, clientToken: response.clientToken })
+                setData({ clientToken: response.clientToken })
             }
         })
     }
@@ -51,6 +53,7 @@ function Checkout({ products, setRun = f => f, run = undefined }) {
     }
 
     const buy = () => {
+        setData({ loading: true })
         //send the nonce to your server
         //nonce = data.instance.requestPaymentMethod()
 
@@ -63,6 +66,29 @@ function Checkout({ products, setRun = f => f, run = undefined }) {
                 //once you have nonce (card type, card number) send nonce as a 'paymentMethodNonce'
                 //and also total to be charged
                 console.log('Send nonce and total to process', nonce, getTotal(products))
+
+                const paymentData = {
+                    paymentMethodNonce: nonce,
+                    amount: getTotal(products)
+                }
+
+                console.log(paymentData)
+
+                processPayment(userId, token, paymentData)
+                    .then(response => {
+                        // console.log(response)
+                        setData({ ...data, success: response.success })
+                        //empty cart
+                        emptyCart(() => {
+                            console.log('Payment success and empty cart!')
+                            setData({ loading: false })
+                        })
+                        //create order
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        setData({ loading: false })
+                    })
             })
             .catch(error => {
                 console.log("Drop in error", error)
@@ -76,11 +102,14 @@ function Checkout({ products, setRun = f => f, run = undefined }) {
                 <div>
                     <DropIn
                         options={{
-                            authorization: data.clientToken
+                            authorization: data.clientToken,
+                            paypal: {
+                                flow: 'vault'
+                            }
                         }}
                         onInstance={instance => (data.instance = instance)}
                     />
-                    <button onClick={buy} className="btn btn-success">
+                    <button onClick={buy} className="btn btn-success btn-block">
                         Pay
                     </button>
                 </div>
@@ -95,9 +124,21 @@ function Checkout({ products, setRun = f => f, run = undefined }) {
         </div>
     )
 
+    const showSuccess = (success) => (
+        <div className='alert alert-info' style={{ display: success ? '' : 'none' }}>
+            Thanks! Your payment was successful.
+        </div>
+    )
+
+    const showLoading = (loading) => {
+        return <h2>Loading</h2>
+    }
+
     return (
         <div>
             <h2>Total: ${getTotal()}</h2>
+            {showLoading(data.loading)}
+            {showSuccess(data.success)}
             {showError(data.error)}
             {showCheckout()}
         </div>
