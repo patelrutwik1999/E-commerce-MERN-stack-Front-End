@@ -37,7 +37,7 @@ function AddProduct() {
     }, [])
 
     //destructing the values so that we can easily use it.
-    const { name, description, price, categories, category, shipping, quantity, loading, error, createdProduct, redirectToProfile, formData } = values;
+    const { name, description, price, categories, quantity, loading, error, createdProduct, formData } = values;
     const { user, token } = isAuthenticated();
 
     //Higher order functions

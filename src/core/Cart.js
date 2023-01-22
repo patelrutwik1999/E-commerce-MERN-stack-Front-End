@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import Card from './Card';
-import { getCartFromLocalStorage, itemTotalInCart } from './cartHelpers';
+import { getCartFromLocalStorage } from './cartHelpers';
 import Layout from './Layout';
 
 function Cart() {
