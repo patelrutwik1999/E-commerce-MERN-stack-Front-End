@@ -78,13 +78,13 @@ function Checkout({ products, setRun = f => f, run = undefined }) {
 
                 processPayment(userId, token, paymentData)
                     .then(response => {
-                        // console.log(response)
+                        console.log(response)
                         setData({ ...data, success: response.success })
                         //empty cart
 
                         const createOrderData = {
                             products: products,
-                            transaction_id: response.transaction_id,
+                            transaction_id: response.transaction.id,
                             amount: response.transaction.amount,
                             address: deliveryAddress
                         }
