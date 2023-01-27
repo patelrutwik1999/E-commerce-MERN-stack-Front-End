@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { isAuthenticated } from '../auth';
-import { listOrders, getStatusValue } from './apiAdmin'
+import { listOrders, getStatusValue, updateOrderStatus } from './apiAdmin'
 import Layout from '../core/Layout';
 import moment from 'moment';
 
@@ -64,7 +64,13 @@ function Orders() {
     }
 
     const handleStatusChange = (event, orderId) => {
-        console.log("updateOrderStatus")
+        updateOrderStatus(user._id, token, orderId, event.target.value).then(data => {
+            if (data.error) {
+                console.log('Status update failed.')
+            } else {
+                loadOrders()
+            }
+        })
     }
 
     const showStatus = (order) => (
